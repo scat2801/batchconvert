@@ -3,10 +3,14 @@
 close all;
 clear all;
 
-cd 'C:\Users\mchen\Downloads\LCconvert\unzip'
+cd 'D:\LCconvert\unzip'
+%cd 'C:\Users\mchen\Downloads\LCconvert\unzip'
 
-addpath('C:\Users\mchen\Documents\MATLAB\dicm2nii');
-addpath('C:\Users\mchen\Documents\MATLAB\dcnconvert');
+addpath('C:\Users\Mitch\Documents\MATLAB\git\dicm2nii');
+addpath('C:\Users\Mitch\Documents\MATLAB\git\batchconvert');
+
+% addpath('C:\Users\mchen\Documents\MATLAB\dicm2nii');
+% addpath('C:\Users\mchen\Documents\MATLAB\dcnconvert');
 
 all_files = dir;
 %all_dir = all_files([all_files(:).isdir]);
@@ -23,7 +27,8 @@ for i = 1:num_dir
 end
 
 %dest_path
-save_path = 'C:\Users\mchen\Downloads\LCconvert\output';
+save_path = 'D:\LCconvert\output';
+%save_path = 'C:\Users\mchen\Downloads\LCconvert\output';
 % mydir = dest_path;
 
 % idcs   = strfind(mydir,'\');
@@ -46,26 +51,49 @@ for i = 1:num_dir
     
     target_file_name = strcat(image_no(i), '.nii.gz');
     
-    dicm2nii(path(i), save_path, 'nii.gz');
+    dicm2nii_filtered(path(i), save_path, 'nii.gz');
     mat_file = strcat(save_path, '\', 'dcmHeaders.mat');
     
     load (mat_file);
     names =  fieldnames(h);
     delete_extra = '';
     
+    %if all 512, then keep the one with msot number of CC slices
+    op_slices = 0;
+    op_index = 1;
+    
     if size(names,1) > 1
         for j = 1:size(names,1)
-            if isfield (getfield(h,names{j}), 'Rows')
-                if getfield(h,names{j}).Rows ~= 512 | getfield(h,names{j}).Columns ~= 512
-                    extra = string(strcat(save_path, '\', names(j), '.nii.gz'));
-                    delete (extra)
+            if isfield (getfield(h,names{j}), 'LocationsInAcquisition')
+                if getfield(h,names{j}).LocationsInAcquisition > op_slices
+                    op_slices = getfield(h,names{j}).LocationsInAcquisition;
+                    op_index = j;
                 end
-            else
-            extra = string(strcat(save_path, '\', names(j), '.nii.gz'));
-                    delete (extra)
             end
         end
+
+        for j = 1:size(names,1)
+            if j ~= op_index
+                 extra = string(strcat(save_path, '\', names(j), '.nii.gz'));
+                 delete (extra)
+            end
+        end
+        
+%         for j = 1:size(names,1)
+%             if isfield (getfield(h,names{j}), 'Rows')
+%                 if getfield(h,names{j}).Rows ~= 512 | getfield(h,names{j}).Columns ~= 512
+%                     extra = string(strcat(save_path, '\', names(j), '.nii.gz'));
+%                     delete (extra)
+%                 end
+%             else
+%             extra = string(strcat(save_path, '\', names(j), '.nii.gz'));
+%                     delete (extra)
+%             end
+%         end
+        
+      end
     end
+    
     
     delete (mat_file)
 
@@ -76,6 +104,6 @@ for i = 1:num_dir
 %     
 %     waitbar(i/num_dir,f,sprintf('p.'))
     
-end
+
 
 % delete(f)

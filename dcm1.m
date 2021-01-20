@@ -1,4 +1,5 @@
 %convert from DICOM to nifti
+%not used in batchconvert.m
 
 close all;
 clear all;
