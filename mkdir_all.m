@@ -4,7 +4,7 @@
 close all;
 clear all;
 
-cd 'E:\DICOM 18012021';
+cd 'E:\DCM 21012021';
 
 % cd 'C:\Users\mchen\Downloads\LCconvert\to convert\';
 
@@ -21,6 +21,6 @@ for i = 1:num_files
     %cd 'C:\Users\mchen\Downloads\LCconvert\unzip\';
     mkdir(image_no(i));
     
-    cd 'E:\DICOM 18012021';
+    cd 'E:\DCM 21012021';
     %cd 'C:\Users\mchen\Downloads\LCconvert\to convert\';
 end

@@ -58,14 +58,26 @@ for i = 1:num_dir
     names =  fieldnames(h);
     delete_extra = '';
     
-    %if all 512, then keep the one with msot number of CC slices
+    %if all 512, then keep the one with most number of CC slices
     op_slices = 0;
     op_index = 1;
+    op_counter = 0;
     
     if size(names,1) > 1
         for j = 1:size(names,1)
+            tmp_field = getfield(h,names{j});
+            if isfield(tmp_field, 'Rows') & isfield(tmp_field, 'Columns')
+                if tmp_field.Rows == 512 & tmp_field.Columns == 512
+                    op_counter = op_counter + 1;
+                end
+            end
+        end
+    end
+    
+    if op_counter > 1
+        for j = 1:size(names,1)
             if isfield (getfield(h,names{j}), 'LocationsInAcquisition')
-                if getfield(h,names{j}).LocationsInAcquisition > op_slices
+                if getfield(h,names{j}).LocationsInAcquisition > op_slices & getfield(h,names{j}).Rows == 512 & getfield(h,names{j}).Columns == 512
                     op_slices = getfield(h,names{j}).LocationsInAcquisition;
                     op_index = j;
                 end
@@ -78,7 +90,7 @@ for i = 1:num_dir
                  delete (extra)
             end
         end
-        
+    end
 %         for j = 1:size(names,1)
 %             if isfield (getfield(h,names{j}), 'Rows')
 %                 if getfield(h,names{j}).Rows ~= 512 | getfield(h,names{j}).Columns ~= 512
@@ -91,8 +103,7 @@ for i = 1:num_dir
 %             end
 %         end
         
-      end
-    end
+
     
     
     delete (mat_file)
@@ -104,6 +115,6 @@ for i = 1:num_dir
 %     
 %     waitbar(i/num_dir,f,sprintf('p.'))
     
-
+end
 
 % delete(f)
