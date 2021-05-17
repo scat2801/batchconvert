@@ -3,14 +3,12 @@
 close all;
 clear all;
 
-cd 'D:\LCconvert\unzip'
-%cd 'C:\Users\mchen\Downloads\LCconvert\unzip'
+%cd 'D:\LCconvert\unzip'
+
+cd 'D:\TCGA - LUAD\manifest-1621208443128\TCGA-LUAD'
 
 addpath('C:\Users\Mitch\Documents\MATLAB\git\dicm2nii');
 addpath('C:\Users\Mitch\Documents\MATLAB\git\batchconvert');
-
-% addpath('C:\Users\mchen\Documents\MATLAB\dicm2nii');
-% addpath('C:\Users\mchen\Documents\MATLAB\dcnconvert');
 
 all_files = dir;
 %all_dir = all_files([all_files(:).isdir]);
@@ -27,8 +25,10 @@ for i = 1:num_dir
 end
 
 %dest_path
-save_path = 'D:\LCconvert\output';
-%save_path = 'C:\Users\mchen\Downloads\LCconvert\output';
+%save_path = 'D:\LCconvert\output';
+
+save_path = 'D:\TCGA - LUAD\manifest-1621208443128\NIFTI'
+
 % mydir = dest_path;
 
 % idcs   = strfind(mydir,'\');

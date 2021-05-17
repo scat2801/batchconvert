@@ -4,7 +4,7 @@
 close all;
 clear all;
 
-cd 'F:\NII 300421\Satisfactory';
+cd 'E:\DCM 24012020';
 
 % cd 'C:\Users\mchen\Downloads\LCconvert\to convert\';
 
@@ -15,15 +15,12 @@ path = string(num_files);
 
 for i = 1:num_files
     path(i) = all_files(i+2).name; 
-    
-    %image_no(i) = extractBefore(path(i), '.zip');
+    image_no(i) = extractBefore(path(i), '.zip');
    
-    image_no(i) = extractBefore(path(i), '.nii.gz');
-    
     cd 'D:\LCconvert\unzip\';
-    
+    %cd 'C:\Users\mchen\Downloads\LCconvert\unzip\';
     mkdir(image_no(i));
     
-    cd 'F:\DCM 30042021';
-
+    cd 'E:\DCM 24012020';
+    %cd 'C:\Users\mchen\Downloads\LCconvert\to convert\';
 end
