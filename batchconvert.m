@@ -11,8 +11,8 @@ addpath('C:\Users\Mitch\Documents\MATLAB\git\dicm2nii');
 addpath('C:\Users\Mitch\Documents\MATLAB\git\batchconvert');
 
 all_files = dir;
-%all_dir = all_files([all_files(:).isdir]);
-num_dir = numel(all_files) - 2;
+all_files = all_files([all_files(:).isdir]);
+num_dir = numel(all_files);
 
 path = string(num_dir);
 image_no = string(num_dir);
@@ -20,8 +20,8 @@ image_no = string(num_dir);
 %choose source folder
 for i = 1:num_dir
 %DICOM files folder
-    path (i) = strcat(all_files(i+2).folder, '\', all_files(i+2).name);
-    image_no (i) = all_files(i+2).name;
+    path (i) = strcat(all_files(i).folder, '\', all_files(i).name);
+    image_no (i) = all_files(i).name;
 end
 
 %dest_path
