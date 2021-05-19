@@ -3,7 +3,7 @@
 close all;
 clear all;
 
-folderpath = 'D:\IO Cohorts\CPTAC-LUAD\manifest-1621170891678\NIFTI'
+folderpath = 'D:\IO Cohorts\LCIO'
 cd (folderpath)
 
 mincc = 3;
