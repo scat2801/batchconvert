@@ -9,13 +9,13 @@ function [not_found] = database_builder(folder_path, dist_path, index_mat)
 %    index_mat - array of numerical scan IDs
 %
 % Outputs:
-%    not_found - IDs of files not found, can be passed as index_mat in
+%    not_found - IDs of files not found, can be passed as new index_mat in
 %               another function call to search in a different folder.
 %
 % Examples: 
 %    [not_found] = database_builder('C:\directory\', 'C:\database', index_mat)
-%   
-% Other m-files required: none
+%    
+% Other m-files required: extractNumFromStr
 % Subfunctions: none
 % MAT-files required: none
 %
@@ -28,6 +28,9 @@ function [not_found] = database_builder(folder_path, dist_path, index_mat)
 %------------- BEGIN CODE --------------
 
 not_found = index_mat;
+not_found_op = zeros(length(not_found));
+
+addpath 'C:\Users\Mitch\Documents\MATLAB\git\sort_files'
 
 cd (folder_path);
 
@@ -36,32 +39,30 @@ all_files = dir;
 all_files = all_files(~[all_files(:).isdir]);
 num_files = numel(all_files);
 
+mkdir (strcat(dist_path, '\duplicates'));
+
 image_no = string(num_files);
+size_mat = length(index_mat);
 
 for j = 1:num_files
-    if all_files(j).name(end) == 'i'
-        image_no(j) = extractBefore(all_files(j).name, '.nii');
-    elseif all_files(j).name(end) == 'z'
-        image_no(j) = extractBefore(all_files(j).name, '.nii.gz');
-    elseif all_files(j).name(end) == 'd'
-        image_no(j) = extractBefore(all_files(j).name, '.nrrd');
-    end
-    
-    size_mat = length(not_found);
+    image_no(j) = extractNumFromStr(all_files(j).name);
     
     for i = 1:size_mat
         try
-        if not_found(i) == image_no(j) 
-            copyfile (all_files(j).name, dist_path,'f');
-            try
-                not_found(i) = [];
-            catch ME
-                disp("Matrix index is out of range for deletion.");
+        if index_mat(i) == image_no(j) 
+            if isfile(strcat(dist_path, '\', all_files(j).name)) == 0
+                copyfile (all_files(j).name, dist_path, 'f');
+            else
+                copyfile (all_files(j).name, strcat(dist_path, '\duplicates\'), 'f');
             end
-            break;
+            
+            if not_found_op(i) == 0
+                not_found(i) = [];
+                not_found_op(i) = 1; 
+            end
         end
         catch ME
-            disp("Matrix index is out of range for deletion.");
+            disp("Matrix index is out of range for deletion-2.");
         end
     end
 end
