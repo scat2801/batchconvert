@@ -3,9 +3,9 @@
 close all;
 clear all;
 
-%cd 'D:\LCconvert\unzip'
+cd 'D:\LCconvert\unzip'
 
-cd 'D:\TCGA - LUAD\manifest-1621208443128\TCGA-LUAD'
+%cd 'D:\TCGA - LUAD\manifest-1621208443128\TCGA-LUAD'
 
 addpath('C:\Users\Mitch\Documents\MATLAB\git\dicm2nii');
 addpath('C:\Users\Mitch\Documents\MATLAB\git\batchconvert');
@@ -25,9 +25,9 @@ for i = 1:num_dir
 end
 
 %dest_path
-%save_path = 'D:\LCconvert\output';
+save_path = 'D:\LCconvert\output';
 
-save_path = 'D:\TCGA - LUAD\manifest-1621208443128\NIFTI'
+%save_path = 'D:\TCGA - LUAD\manifest-1621208443128\NIFTI'
 
 % mydir = dest_path;
 
@@ -41,7 +41,7 @@ save_path = 'D:\TCGA - LUAD\manifest-1621208443128\NIFTI'
 % setappdata(f,'canceling',0);
 
 %convert to nii
-for i = 1:num_dir
+for i = 3:num_dir
     
 %     if getappdata(f,'canceling')
 %         break
