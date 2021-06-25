@@ -12,7 +12,7 @@ function [all_files, image_no] = filename_retriever(folder_path, type)
 %    image_no - file names array
 %
 % Examples: 
-%    1. [all_files, image_no] = filename_retriever('C:\directory\', '.nii.gz')
+%    1. [all_files, image_no] = filename_retriever('C:\directory\', '.nii')
 %    2. [all_files, image_no] = filename_retriever('C:\directory\')
 %    3. [all_files] = filename_retriever('C:\directory\')
 %
@@ -24,7 +24,7 @@ function [all_files, image_no] = filename_retriever(folder_path, type)
 
 % Author: Mitchell Chen, BMBCh MEng DPhil FRCR 
 % Email address: d.mitch.chen@gmail.com  
-% May 2021; Last revision: 18-May-2021
+% May 2021; Last revision: 09-Jun-2021
 
 %------------- BEGIN CODE --------------
 
@@ -50,12 +50,12 @@ for i = 1:num_files
     if nargin == 1
         image_no(i) = all_files(i).name;
     elseif nargin == 2
-        image_no(i) = extractBefore(all_files(i).name, type);
+        image_no(i) = extractNumFromStr(extractBefore(all_files(i).name, type));
     else
         disp('re-check number of inputs');
         return;
     end
 end
 
-image_no = image_no';
+image_no = unique(image_no');
 %------------- END CODE --------------

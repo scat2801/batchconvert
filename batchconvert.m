@@ -1,4 +1,5 @@
 %one file conversion from unzip to nifti. Start in source directory
+%updated 23/06/2021 - handling 768x768 cases
 
 close all;
 clear all;
@@ -68,6 +69,8 @@ for i = 3:num_dir
             tmp_field = getfield(h,names{j});
             if isfield(tmp_field, 'Rows') & isfield(tmp_field, 'Columns')
                 if tmp_field.Rows == 512 & tmp_field.Columns == 512
+                    op_counter = op_counter + 1;
+                elseif tmp_field.Rows == 768 & tmp_field.Columns == 768
                     op_counter = op_counter + 1;
                 end
             end

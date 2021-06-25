@@ -6,13 +6,14 @@ function [not_found] = database_builder(folder_path, dist_path, index_mat)
 %
 % Inputs:
 %    folder_path - directory path
+%    dist_path - where to move the files to 
 %    index_mat - array of numerical scan IDs
 %
 % Outputs:
 %    not_found - IDs of files not found, can be passed as new index_mat in
 %               another function call to search in a different folder.
 %
-% Examples: 
+% Example: 
 %    [not_found] = database_builder('C:\directory\', 'C:\database', index_mat)
 %    
 % Other m-files required: extractNumFromStr
@@ -23,12 +24,13 @@ function [not_found] = database_builder(folder_path, dist_path, index_mat)
 
 % Author: Mitchell Chen, BMBCh MEng DPhil FRCR 
 % Email address: d.mitch.chen@gmail.com  
-% May 2021; Last revision: 19-May-2021
+% May 2021; Last revision: 22-Jun-2021
 
 %------------- BEGIN CODE --------------
 
-not_found = index_mat;
-not_found_op = zeros(length(not_found));
+not_found = zeros(size(index_mat));
+counter = 0;
+not_found_op = ones(size(not_found));
 
 addpath 'C:\Users\Mitch\Documents\MATLAB\git\sort_files'
 
@@ -51,19 +53,26 @@ for j = 1:num_files
         try
         if index_mat(i) == image_no(j) 
             if isfile(strcat(dist_path, '\', all_files(j).name)) == 0
-                copyfile (all_files(j).name, dist_path, 'f');
+                %copyfile (all_files(j).name, dist_path, 'f');
+                movefile (all_files(j).name, dist_path, 'f');
             else
-                copyfile (all_files(j).name, strcat(dist_path, '\duplicates\'), 'f');
+                %copyfile (all_files(j).name, strcat(dist_path, '\duplicates\'), 'f');
+                movefile (all_files(j).name, strcat(dist_path, '\duplicates\'), 'f');
             end
             
-            if not_found_op(i) == 0
-                not_found(i) = [];
-                not_found_op(i) = 1; 
-            end
+            not_found_op(i) = 0;
         end
         catch ME
             disp("Matrix index is out of range for deletion-2.");
         end
+    end
+    
+end
+
+for i = 1:length(not_found_op)
+    if not_found_op (i) == 1
+        counter = counter + 1;
+        not_found (counter) = index_mat(i);
     end
 end
 

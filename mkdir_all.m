@@ -4,7 +4,7 @@
 close all;
 clear all;
 
-cd 'F:\DCM IO';
+cd 'F:\DCM rc\';
 
 % cd 'C:\Users\mchen\Downloads\LCconvert\to convert\';
 
@@ -24,6 +24,6 @@ for i = 1:num_files
     
     mkdir(image_no(i));
     
-    cd 'F:\DCM IO';
+    cd 'F:\DCM rc\';
 
 end
